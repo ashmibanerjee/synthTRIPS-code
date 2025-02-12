@@ -1,0 +1,21 @@
+{
+    "popularity": [
+        "low", "medium", "high"
+    ],
+    "non-sustainable": {
+        "budget": [
+            "low", "medium", "high"
+        ],
+        "interests": [
+            "Arts & Entertainment", "Outdoors & Recreation" , "Food", "Nightlife Spot", "Shops & Services"
+        ],
+        "month": [
+            "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+        ]
+    },
+    "sustainable": {
+        "seasonality": "low",
+        "walkability": "great",
+        "aqi": "great" 
+    }
+}
