@@ -4,7 +4,7 @@ current = os.path.dirname(os.path.realpath(''))
 parent = os.path.dirname(current)
 
 data_parent_dir = "data/"
-data_dir = data_parent_dir + "conv-trs/"
+data_dir = data_parent_dir + "synthTRIPS/"
 gt_dir = data_dir + "gt-generation/"
 kg_dir = data_dir + "kg-generation/"
 prompts_dir = data_dir + "prompts/"
