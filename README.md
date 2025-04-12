@@ -15,7 +15,7 @@ To execute the pipeline and/or the tests, please follow the steps below:
 2. Install the requirements: `pip install -r requirements.txt` 
 
 
-## Acknowledgements
+## Acknowledgments
 We thank the Google AI/ML Developer Programs team for supporting us with Google Cloud Credits.
 
 
