@@ -9,63 +9,43 @@ from src.llm_setup.models import Gemini2Flash, Gemini1Point5Pro, Claude3Point5So
 logger = logging.getLogger(__name__)
 METHODS = ['v', 'p0', 'p1']
 import pandas as pd
+from tests.eval.judgellm.evaluator import EvaluatorBaseClass
 
 
-class Evaluator():
+class Evaluator(EvaluatorBaseClass):
     def __init__(self, qg_model=None):
-        if qg_model is None:
-            print("Incorrect Query Generator Model provided! Please provide one of two options: gemini or llama")
-            return
-
-        self.qg_model = qg_model
-        self.env = Environment(loader=FileSystemLoader(f"{prompts_dir}eval/query_generation/"))
-        self.llm_judge = GPT4o
+        """
+        Initialize JudgeLLM Base Class with relevant argumnets. 
+        """
+        super().__init__(
+            qg_model=qg_model, 
+            sys_template="persona_alignment_sys.txt",
+            usr_template="persona_alignment_user.txt", 
+            prompt_func="_create_prompt_persona_alignment"
+        )
     
-    def _create_prompt(self, query, persona):
-        sys_template = self.env.get_template("persona_alignment_sys.txt")
-        sys_prompt = {
-            "role": "system",
-            "content": sys_template.render()
+    def _create_prompt_persona_alignment(self, query, context_var):
+        """
+        Here, context_var is the persona
+        """
+        sys_context = {}
+        
+        sys_prompt = self.render_prompt(
+            role="sys", 
+            context=sys_context
+        )
+
+        user_context = {
+            'persona': context_var,
+            'query': query,
         }
 
-        usr_template = self.env.get_template("persona_alignment_user.txt")
-        usr_prompt = {
-            "role": "user",
-            "content": usr_template.render({
-                'persona': persona,
-                'query': query,
-            })
-        }
+        usr_prompt = self.render_prompt(
+            role="user",
+            context=user_context
+        )
 
         return [sys_prompt, usr_prompt]
-
-    def _generate(self, prompt):
-        """Generate a response using the specified model locations."""
-        try:
-            llm = self.llm_judge()
-            response = llm.generate(messages=prompt)
-            return response
-        except Exception as e:
-            logger.error(f"Error with model: {e}")
-            time.sleep(10)
-
-        logger.error("All model locations have been tried and failed.")
-        return None
-
-    def run(self, config_id, persona, method, query):
-        """Run the groundedness evaluation pipeline for the specified method."""
-        if method not in METHODS:
-            logger.error(f"Invalid method: {method}. Must be one of {METHODS}.")
-            return None
-
-        print(f"Evaluating {self.qg_model} generated queries for config {config_id}, method: {method}...")
-        prompt = self._create_prompt(query=query, persona=persona)
-
-        time.sleep(2)
-        response = self._generate(prompt)
-
-        return response
-
 
 def test(model, sample=0):
     csv_name = None
@@ -105,7 +85,7 @@ def test(model, sample=0):
         for method in METHODS:
             res = obj.run(
                 config_id=row['config_id'],
-                persona=persona,
+                context_var=persona,
                 method=method,
                 query=row[f'query_{method}']
             )
