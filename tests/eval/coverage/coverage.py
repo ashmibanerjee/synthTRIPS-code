@@ -73,16 +73,17 @@ def test(model, sample=0):
 
     try:
         output_df = pd.read_csv(f"{coverage_dir}{csv_name}")
-        exisiting_configs = set(output_df["config_id"])
+        existing_configs = set(output_df["config_id"])
+        coverage = output_df.to_dict()
     except FileNotFoundError:
         print("Existing configs not found, proceeding with fresh evaluation...")
-        exisiting_configs = set()
+        existing_configs = set()
+        coverage = []
 
-    coverage = []
     obj = Evaluator(qg_model=model)
     for index, row in df.iterrows():
         config_id = row["config_id"]
-        if row["config_id"] in exisiting_configs:
+        if row["config_id"] in existing_configs:
             print(f"Skipping config {index}/{len(df)} - Config ID: {config_id} (already processed).")
             continue
 

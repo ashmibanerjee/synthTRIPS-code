@@ -61,13 +61,14 @@ def test(model, sample=0):
     #     df = df.loc[:9]
 
     try:
-        output_df = pd.read_csv(f"{persona_alignment_dir}{csv_name}")
+        output_df = pd.read_csv(f"{coverage_dir}{csv_name}")
         existing_configs = set(output_df["config_id"])
+        coverage = output_df.to_dict()
     except FileNotFoundError:
         print("Existing configs not found, proceeding with fresh evaluation...")
         existing_configs = set()
+        coverage = []
 
-    coverage = []
     obj = Evaluator(qg_model=model)
     for index, row in df.iterrows():
         config_id = row["config_id"]
