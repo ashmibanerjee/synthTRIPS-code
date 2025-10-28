@@ -23,13 +23,13 @@ We thank the Google AI/ML Developer Programs team for supporting us with Google 
 
 If you use the dataset or framework, please cite the following: 
 
-@inproceedings{banerjee2025synthTRIPS,
+```@inproceedings{banerjee2025synthTRIPS,
     title={SynthTRIPs: A Knowledge-Grounded Framework for Benchmark Query Generation for Personalized Tourism Recommenders},
     author={Ashmi Banerjee and Adithi Satish and Fitri Nur Aisyah and
     Wolfgang Wörndl and Yashar Deldjoo},
     year={2025},
     year={2025},
     booktitle={In Proceedings of the 48th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR ’25)},
-    doi={https://doi.org/10.1145/3726302.3730321}
-}
+    doi={https://doi.org/10.1145/3726302.3730321}}
+```
 
